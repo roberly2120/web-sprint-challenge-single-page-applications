@@ -1,5 +1,5 @@
 import React from 'react'
-import style from './App.css'
+
 
 export default function Form(props) {
     const { values, change, submit, disabled, errors, clickHome } = props;

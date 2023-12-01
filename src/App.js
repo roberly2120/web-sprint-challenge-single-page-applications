@@ -28,6 +28,7 @@ const App = () => {
   const [orderValues, setOrderValues] = useState(initialFormValues);
   const [submit, setSubmit] = useState(false);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
+  const [disabled, setDisabled] = useState(true);
 
   const inputChange = (name, value) => {
     setFormValues({...formValues, [name]: value})
@@ -80,8 +81,17 @@ const App = () => {
   const validate = (name, value) => {
     yup.reach(schema, name)
       .validate(value)
-      .then(() => setFormErrors({...formErrors, [name]: ""}))
-      .catch(err => setFormErrors({...formErrors, [name]: err.errors[0]}))
+      .then(() => {
+        setFormErrors({ ...formErrors, [name]: "" })
+        setDisabled(false)
+      }
+        
+        )
+      .catch(err => {
+        setFormErrors({ ...formErrors, [name]: err.errors[0] })
+        setDisabled(true)
+      }
+      )
   }
 
   return (
@@ -102,7 +112,8 @@ const App = () => {
           change={inputChange}
           submit={submitForm}
           clickHome={clickHome}
-          errors={formErrors}     
+          errors={formErrors}
+          disabled={disabled}     
         /> 
         : <Confirmation values={orderValues} done={clickHome} edit={editOrder} />} 
       />
